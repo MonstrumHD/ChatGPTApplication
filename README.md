@@ -1,3 +1,3 @@
 # ChatGPTApplication
 
-Test
+ChatGPT API Communication, Straight from your computer
