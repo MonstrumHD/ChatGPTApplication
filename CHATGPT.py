@@ -58,5 +58,3 @@ elif key.thekey.find('sk-') == -1:
     ask()
 
 ask()
-
-#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
