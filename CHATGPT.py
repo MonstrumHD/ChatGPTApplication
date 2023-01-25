@@ -2,14 +2,24 @@ import openai
 import time
 import re
 import auth as key
+from InquirerPy import prompt
 
 openai.api_key = key.thekey
 
-def setkey():
-    inputs = input()
+def question(text):
+    questions = {
+        'type': 'input',
+        'name': 'prompt',
+        'message': text
+    }
+
+    return prompt(questions)
+
+def setkey(text):
+    inputs = question(text)['prompt']
     if inputs.find('sk-') == -1:
         print('    Incorrect API Key!! Re-Insert Key Below, Key can be found at "https://beta.openai.com/account/api-keys"')
-        setkey()
+        setkey('API KEY: ')
     else:
         with open("auth.py", "r") as f:
             data = f.read()
@@ -23,8 +33,7 @@ def setkey():
 
 def ask():
     print('')
-    print("    Ask your question below")
-    prompt = input()
+    prompt = question('What is your question?')['prompt']
 
     try:
         completions = openai.Completion.create(
@@ -37,8 +46,8 @@ def ask():
         )
     except:
         print('')
-        print('    Incorrect API Key!! Re-Insert Key Below, Key can be found at "https://beta.openai.com/account/api-keys"')
-        setkey()
+        print('Incorrect API Key!! Re-Insert Key Below, Key can be found at "https://beta.openai.com/account/api-keys"')
+        setkey('API KEY: ')
         ask()
     else:
         print(completions.choices[0].text)
@@ -49,12 +58,12 @@ def ask():
 if key.thekey == "":
     print('Hello New User, This application communicates to ChatGPT on your computer so you do not have to deal with the website. Insert your API Key below from "https://beta.openai.com/account/api-keys" to get started.')
     print('')
-    setkey()
+    setkey('API KEY: ')
     ask()
 elif key.thekey.find('sk-') == -1:
     print('    Insert API Key below, Key can be found at "https://beta.openai.com/account/api-keys"')
     print('')
-    setkey()
+    setkey('API KEY: ')
     ask()
 
 ask()
